@@ -1,0 +1,46 @@
+﻿@model AssetManagement.Models.Asset
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Asset</h4>
+    <hr />
+    <table>
+        <tr>
+            <th>MAC:</th>
+            <td>@Html.DisplayFor(model => model.Telephone.MAC)</td>
+            <th>Model:</th>
+            <td>@Html.DisplayFor(model => model.Telephone.SubCategory.Name)</td>
+            <th>Brand:</th>
+            <td>@Html.DisplayFor(model => model.Telephone.SubCategory.Category.Name)</td>
+        </tr>
+        <tr>
+            <th>Serial No:</th>
+            <td>@Html.DisplayFor(model => model.Telephone.SerialNo)</td>
+            <th>Tag:</th>
+            <td>@Html.DisplayFor(model => model.Telephone.Tag)</td>
+            <th>Extension:</th>
+            <td>@Html.DisplayFor(model => model.Extension.Number)</td>
+        </tr>
+        <tr>
+            <th>Employee:</th>
+            <td>@Html.DisplayFor(model => model.Extension.Employee.Name)</td>
+            <th>Badge No:</th>
+            <td>@Html.DisplayFor(model => model.Extension.Employee.BadgeNo)</td>
+            <th>Department:</th>
+            <td>@Html.DisplayFor(model => model.Extension.Employee.Department.Name)</td>
+        </tr>
+    </table>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<style>
+    tr{
+        padding: 10px;
+    }
+</style>

@@ -1,0 +1,195 @@
+﻿@model AssetManagement.ViewModels.EmployeeAssetViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+
+
+
+<nav>
+    <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-info-tab" data-toggle="tab" href="#nav-info" role="tab" aria-controls="nav-info" aria-selected="true">User Information</a>
+        <a class="nav-item nav-link" id="nav-telephones-tab" data-toggle="tab" href="#nav-telephones" role="tab" aria-controls="nav-telephones" aria-selected="false">Telephones</a>
+        <a class="nav-item nav-link" id="nav-extension-tab" data-toggle="tab" href="#nav-extension" role="tab" aria-controls="nav-extension" aria-selected="false">Extension</a>
+        <a class="nav-item nav-link" id="nav-pager-tab" data-toggle="tab" href="#nav-pager" role="tab" aria-controls="nav-pager" aria-selected="false">Pagers</a>
+        <a class="nav-item nav-link" id="nav-otherasset-tab" data-toggle="tab" href="#nav-otherasset" role="tab" aria-controls="nav-otherasset" aria-selected="false">Other Assets</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
+        <br />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BadgeNo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Department)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.BadgeNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Department)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-telephones" role="tabpanel" aria-labelledby="nav-telephones-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-2">
+            <thead>
+                <tr>
+                    <th>MAC</th>
+                    <th>SerialNo</th>
+                    <th>Tag</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var telephone in Model.Telephones)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => telephone.MAC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => telephone.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => telephone.Tag)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => telephone.Remark)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-extension" role="tabpanel" aria-labelledby="nav-extension-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-3">
+            <thead>
+                <tr>
+                    <th>Extension</th>
+                    <th>Usage</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var extension in Model.Extensions)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => extension.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => extension.Usage)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-pager" role="tabpanel" aria-labelledby="nav-pager-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-4">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Capcode</th>
+                    <th>Comment</th>
+                    <th>Cust</th>
+                    <th>RateCode</th>
+                    <th>SerialNo</th>
+                    <th>Status</th>
+                    <th>MailCode</th>
+                    <th>Facility</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pager in Model.Pagers)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.Capcode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.Comment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.Cust)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.RateCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.MailCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => pager.Facility)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-otherasset" role="tabpanel" aria-labelledby="nav-otherasset-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-5">
+            <thead>
+                <tr>
+                    <th>SerialNo</th>
+                    <th>DN</th>
+                    <th>Model</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var otherAsset in Model.OtherAssets)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => otherAsset.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => otherAsset.DN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => otherAsset.Model)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

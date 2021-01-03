@@ -1,0 +1,174 @@
+﻿@model IEnumerable<AssetManagement.Models.Extension>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<nav>
+    <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">End User</a>
+        <a class="nav-item nav-link" id="nav-available-tab" data-toggle="tab" href="#nav-available" role="tab" aria-controls="nav-available" aria-selected="false">Available</a>
+        <a class="nav-item nav-link" id="nav-systemUse-tab" data-toggle="tab" href="#nav-systemUse" role="tab" aria-controls="nav-systemUse" aria-selected="false">System Use</a>
+        <a class="nav-item nav-link" id="nav-pilotNumber-tab" data-toggle="tab" href="#nav-pilotNumber" role="tab" aria-controls="nav-pilotNumber" aria-selected="false">Pilot Number</a>
+        <a class="nav-item nav-link" id="nav-huntGroup-tab" data-toggle="tab" href="#nav-huntGroup" role="tab" aria-controls="nav-huntGroup" aria-selected="false">Hunt Group</a>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable">
+            <thead>
+                <tr>
+                    <th>Extension</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Usage == ExtensionUsage.EndUser)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Disposal</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-available" role="tabpanel" aria-labelledby="nav-available-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-2">
+            <thead>
+                <tr>
+                    <th>Extension</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Usage == ExtensionUsage.Available)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Disposal</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-systemUse" role="tabpanel" aria-labelledby="nav-systemUse-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-3">
+            <thead>
+                <tr>
+                    <th>Extension</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Usage == ExtensionUsage.SystemUse)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Disposal</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-pilotNumber" role="tabpanel" aria-labelledby="nav-pilotNumber-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-4">
+            <thead>
+                <tr>
+                    <th>Extension</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Usage == ExtensionUsage.PilotNumber)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Disposal</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane fade" id="nav-huntGroup" role="tabpanel" aria-labelledby="nav-huntGroup-tab">
+        <br />
+        <table class="table table-bordered" id="dataTable-5">
+            <thead>
+                <tr>
+                    <th>Extension</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Usage == ExtensionUsage.HuntGroup)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Disposal</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts { 
+    <script>
+        $(document).ready(function () {
+            $("#dataTable-2").DataTable();
+            $("#dataTable-3").DataTable();
+            $("#dataTable-4").DataTable();
+            $("#dataTable-5").DataTable();
+        });
+    </script>
+}
