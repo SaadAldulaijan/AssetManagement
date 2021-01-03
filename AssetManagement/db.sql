@@ -1,279 +1,471 @@
-﻿IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
-BEGIN
-    CREATE TABLE [__EFMigrationsHistory] (
-        [MigrationId] nvarchar(150) NOT NULL,
-        [ProductVersion] nvarchar(32) NOT NULL,
-        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
-    );
-END;
+﻿USE [master]
 GO
-
-BEGIN TRANSACTION;
+/****** Object:  Database [AssetManagementDB]    Script Date: 1/3/2021 11:30:27 AM ******/
+CREATE DATABASE [AssetManagementDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'AssetManagementDB', FILENAME = N'C:\Users\SABIC\AssetManagementDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'AssetManagementDB_log', FILENAME = N'C:\Users\SABIC\AssetManagementDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
 GO
-
-CREATE TABLE [Asset] (
-    [Id] int NOT NULL IDENTITY,
-    [TelephoneId] int NOT NULL,
-    [EmployeeId] int NOT NULL,
-    [ExtensionId] int NOT NULL,
-    CONSTRAINT [PK_Asset] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Asset_Employee_EmployeeId] FOREIGN KEY ([EmployeeId]) REFERENCES [Employee] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Asset_Extension_ExtensionId] FOREIGN KEY ([ExtensionId]) REFERENCES [Extension] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_Asset_Telephone_TelephoneId] FOREIGN KEY ([TelephoneId]) REFERENCES [Telephone] ([Id]) ON DELETE CASCADE
-);
+ALTER DATABASE [AssetManagementDB] SET COMPATIBILITY_LEVEL = 130
 GO
-
-CREATE INDEX [IX_Asset_EmployeeId] ON [Asset] ([EmployeeId]);
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [AssetManagementDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
 GO
-
-CREATE INDEX [IX_Asset_ExtensionId] ON [Asset] ([ExtensionId]);
+ALTER DATABASE [AssetManagementDB] SET ANSI_NULL_DEFAULT OFF 
 GO
-
-CREATE INDEX [IX_Asset_TelephoneId] ON [Asset] ([TelephoneId]);
+ALTER DATABASE [AssetManagementDB] SET ANSI_NULLS OFF 
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201207055812_initi', N'5.0.1');
+ALTER DATABASE [AssetManagementDB] SET ANSI_PADDING OFF 
 GO
-
-COMMIT;
+ALTER DATABASE [AssetManagementDB] SET ANSI_WARNINGS OFF 
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE [AssetManagementDB] SET ARITHABORT OFF 
 GO
-
-DECLARE @var0 sysname;
-SELECT @var0 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[TelephoneExtension]') AND [c].[name] = N'InstalledDate');
-IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [TelephoneExtension] DROP CONSTRAINT [' + @var0 + '];');
-ALTER TABLE [TelephoneExtension] DROP COLUMN [InstalledDate];
+ALTER DATABASE [AssetManagementDB] SET AUTO_CLOSE ON 
 GO
-
-ALTER TABLE [Asset] ADD [InstalledDate] datetime2 NOT NULL DEFAULT '0001-01-01T00:00:00.0000000';
+ALTER DATABASE [AssetManagementDB] SET AUTO_SHRINK OFF 
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201207060955_addinstalledDate', N'5.0.1');
+ALTER DATABASE [AssetManagementDB] SET AUTO_UPDATE_STATISTICS ON 
 GO
-
-COMMIT;
+ALTER DATABASE [AssetManagementDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE [AssetManagementDB] SET CURSOR_DEFAULT  GLOBAL 
 GO
-
-DROP TABLE [TelephoneEmployee];
+ALTER DATABASE [AssetManagementDB] SET CONCAT_NULL_YIELDS_NULL OFF 
 GO
-
-DROP TABLE [TelephoneExtension];
+ALTER DATABASE [AssetManagementDB] SET NUMERIC_ROUNDABORT OFF 
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201207070024_majorChange', N'5.0.1');
+ALTER DATABASE [AssetManagementDB] SET QUOTED_IDENTIFIER OFF 
 GO
-
-COMMIT;
+ALTER DATABASE [AssetManagementDB] SET RECURSIVE_TRIGGERS OFF 
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE [AssetManagementDB] SET  ENABLE_BROKER 
 GO
-
-ALTER TABLE [Telephone] ADD [InStock] bit NOT NULL DEFAULT CAST(0 AS bit);
+ALTER DATABASE [AssetManagementDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201210063719_addInStock', N'5.0.1');
+ALTER DATABASE [AssetManagementDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
 GO
-
-COMMIT;
+ALTER DATABASE [AssetManagementDB] SET TRUSTWORTHY OFF 
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE [AssetManagementDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
 GO
-
-DECLARE @var1 sysname;
-SELECT @var1 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Extension]') AND [c].[name] = N'Usage');
-IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [Extension] DROP CONSTRAINT [' + @var1 + '];');
-ALTER TABLE [Extension] ALTER COLUMN [Usage] nvarchar(max) NOT NULL;
+ALTER DATABASE [AssetManagementDB] SET PARAMETERIZATION SIMPLE 
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201215125435_addenums', N'5.0.1');
+ALTER DATABASE [AssetManagementDB] SET READ_COMMITTED_SNAPSHOT ON 
 GO
-
-COMMIT;
+ALTER DATABASE [AssetManagementDB] SET HONOR_BROKER_PRIORITY OFF 
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE [AssetManagementDB] SET RECOVERY SIMPLE 
 GO
-
-ALTER TABLE [Pager] ADD [InStock] bit NOT NULL DEFAULT CAST(0 AS bit);
+ALTER DATABASE [AssetManagementDB] SET  MULTI_USER 
 GO
-
-ALTER TABLE [Pager] ADD [IsDefective] bit NOT NULL DEFAULT CAST(0 AS bit);
+ALTER DATABASE [AssetManagementDB] SET PAGE_VERIFY CHECKSUM  
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201216120633_inheritance', N'5.0.1');
+ALTER DATABASE [AssetManagementDB] SET DB_CHAINING OFF 
 GO
-
-COMMIT;
+ALTER DATABASE [AssetManagementDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE [AssetManagementDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
 GO
-
-ALTER TABLE [Pager] DROP CONSTRAINT [FK_Pager_Employee_EmployeeId];
+ALTER DATABASE [AssetManagementDB] SET DELAYED_DURABILITY = DISABLED 
 GO
-
-DECLARE @var2 sysname;
-SELECT @var2 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Pager]') AND [c].[name] = N'EmployeeId');
-IF @var2 IS NOT NULL EXEC(N'ALTER TABLE [Pager] DROP CONSTRAINT [' + @var2 + '];');
-ALTER TABLE [Pager] ALTER COLUMN [EmployeeId] int NULL;
+ALTER DATABASE [AssetManagementDB] SET QUERY_STORE = OFF
 GO
-
-ALTER TABLE [Pager] ADD CONSTRAINT [FK_Pager_Employee_EmployeeId] FOREIGN KEY ([EmployeeId]) REFERENCES [Employee] ([Id]) ON DELETE NO ACTION;
+USE [AssetManagementDB]
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201216130834_nullableEmpId', N'5.0.1');
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
 GO
-
-COMMIT;
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
 GO
-
-BEGIN TRANSACTION;
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
 GO
-
-ALTER TABLE [Asset] DROP CONSTRAINT [FK_Asset_Employee_EmployeeId];
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
 GO
-
-ALTER TABLE [OtherAsset] DROP CONSTRAINT [FK_OtherAsset_Employee_EmployeeId];
+USE [AssetManagementDB]
 GO
-
-ALTER TABLE [Asset] DROP CONSTRAINT [PK_Asset];
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-DROP INDEX [IX_Asset_EmployeeId] ON [Asset];
+SET QUOTED_IDENTIFIER ON
 GO
-
-DROP INDEX [IX_Asset_TelephoneId] ON [Asset];
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-
-DECLARE @var3 sysname;
-SELECT @var3 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Telephone]') AND [c].[name] = N'InStock');
-IF @var3 IS NOT NULL EXEC(N'ALTER TABLE [Telephone] DROP CONSTRAINT [' + @var3 + '];');
-ALTER TABLE [Telephone] DROP COLUMN [InStock];
+/****** Object:  Table [dbo].[Asset]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-DECLARE @var4 sysname;
-SELECT @var4 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Telephone]') AND [c].[name] = N'IsDefective');
-IF @var4 IS NOT NULL EXEC(N'ALTER TABLE [Telephone] DROP CONSTRAINT [' + @var4 + '];');
-ALTER TABLE [Telephone] DROP COLUMN [IsDefective];
+SET QUOTED_IDENTIFIER ON
 GO
-
-DECLARE @var5 sysname;
-SELECT @var5 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Pager]') AND [c].[name] = N'InStock');
-IF @var5 IS NOT NULL EXEC(N'ALTER TABLE [Pager] DROP CONSTRAINT [' + @var5 + '];');
-ALTER TABLE [Pager] DROP COLUMN [InStock];
+CREATE TABLE [dbo].[Asset](
+	[TelephoneId] [int] NOT NULL,
+	[ExtensionId] [int] NOT NULL,
+	[InstalledDate] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Asset] PRIMARY KEY CLUSTERED 
+(
+	[TelephoneId] ASC,
+	[ExtensionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-
-DECLARE @var6 sysname;
-SELECT @var6 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Pager]') AND [c].[name] = N'IsDefective');
-IF @var6 IS NOT NULL EXEC(N'ALTER TABLE [Pager] DROP CONSTRAINT [' + @var6 + '];');
-ALTER TABLE [Pager] DROP COLUMN [IsDefective];
+/****** Object:  Table [dbo].[Category]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-DECLARE @var7 sysname;
-SELECT @var7 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Asset]') AND [c].[name] = N'Id');
-IF @var7 IS NOT NULL EXEC(N'ALTER TABLE [Asset] DROP CONSTRAINT [' + @var7 + '];');
-ALTER TABLE [Asset] DROP COLUMN [Id];
+SET QUOTED_IDENTIFIER ON
 GO
-
-DECLARE @var8 sysname;
-SELECT @var8 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Asset]') AND [c].[name] = N'EmployeeId');
-IF @var8 IS NOT NULL EXEC(N'ALTER TABLE [Asset] DROP CONSTRAINT [' + @var8 + '];');
-ALTER TABLE [Asset] DROP COLUMN [EmployeeId];
+CREATE TABLE [dbo].[Category](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
-ALTER TABLE [Telephone] ADD [Status] int NOT NULL DEFAULT 0;
+/****** Object:  Table [dbo].[Department]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-DECLARE @var9 sysname;
-SELECT @var9 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Pager]') AND [c].[name] = N'Status');
-IF @var9 IS NOT NULL EXEC(N'ALTER TABLE [Pager] DROP CONSTRAINT [' + @var9 + '];');
-ALTER TABLE [Pager] ALTER COLUMN [Status] int NOT NULL;
+SET QUOTED_IDENTIFIER ON
 GO
-
-DECLARE @var10 sysname;
-SELECT @var10 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[OtherAsset]') AND [c].[name] = N'EmployeeId');
-IF @var10 IS NOT NULL EXEC(N'ALTER TABLE [OtherAsset] DROP CONSTRAINT [' + @var10 + '];');
-ALTER TABLE [OtherAsset] ALTER COLUMN [EmployeeId] int NULL;
+CREATE TABLE [dbo].[Department](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
-ALTER TABLE [OtherAsset] ADD [Status] int NOT NULL DEFAULT 0;
+/****** Object:  Table [dbo].[Employee]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-DECLARE @var11 sysname;
-SELECT @var11 = [d].[name]
-FROM [sys].[default_constraints] [d]
-INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
-WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Extension]') AND [c].[name] = N'Usage');
-IF @var11 IS NOT NULL EXEC(N'ALTER TABLE [Extension] DROP CONSTRAINT [' + @var11 + '];');
-ALTER TABLE [Extension] ALTER COLUMN [Usage] int NOT NULL;
+SET QUOTED_IDENTIFIER ON
 GO
-
-ALTER TABLE [Extension] ADD [EmployeeId] int NULL;
+CREATE TABLE [dbo].[Employee](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[BadgeNo] [int] NOT NULL,
+	[Name] [nvarchar](max) NULL,
+	[Email] [nvarchar](max) NULL,
+	[DepartmentId] [int] NOT NULL,
+ CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-
-ALTER TABLE [Asset] ADD CONSTRAINT [PK_Asset] PRIMARY KEY ([TelephoneId], [ExtensionId]);
+/****** Object:  Table [dbo].[Extension]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-CREATE INDEX [IX_Extension_EmployeeId] ON [Extension] ([EmployeeId]);
+SET QUOTED_IDENTIFIER ON
 GO
-
-ALTER TABLE [Extension] ADD CONSTRAINT [FK_Extension_Employee_EmployeeId] FOREIGN KEY ([EmployeeId]) REFERENCES [Employee] ([Id]) ON DELETE NO ACTION;
+CREATE TABLE [dbo].[Extension](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Number] [int] NOT NULL,
+	[Usage] [int] NOT NULL,
+	[EmployeeId] [int] NULL,
+ CONSTRAINT [PK_Extension] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
-
-ALTER TABLE [OtherAsset] ADD CONSTRAINT [FK_OtherAsset_Employee_EmployeeId] FOREIGN KEY ([EmployeeId]) REFERENCES [Employee] ([Id]) ON DELETE NO ACTION;
+/****** Object:  Table [dbo].[OtherAsset]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
 GO
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20201228162938_khaterStructure', N'5.0.1');
+SET QUOTED_IDENTIFIER ON
 GO
-
-COMMIT;
+CREATE TABLE [dbo].[OtherAsset](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SerialNo] [nvarchar](max) NULL,
+	[DN] [nvarchar](max) NULL,
+	[Model] [nvarchar](max) NULL,
+	[EmployeeId] [int] NULL,
+	[Status] [int] NOT NULL,
+ CONSTRAINT [PK_OtherAsset] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+/****** Object:  Table [dbo].[Pager]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pager](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Number] [int] NOT NULL,
+	[Capcode] [nvarchar](max) NULL,
+	[EmployeeId] [int] NULL,
+	[Comment] [nvarchar](max) NULL,
+	[Cust] [nvarchar](max) NULL,
+	[RateCode] [nvarchar](max) NULL,
+	[SerialNo] [nvarchar](max) NULL,
+	[Status] [int] NOT NULL,
+	[MailCode] [nvarchar](max) NULL,
+	[Facility] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Pager] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SubCategory]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SubCategory](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NULL,
+	[CategoryId] [int] NOT NULL,
+ CONSTRAINT [PK_SubCategory] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Telephone]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Telephone](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[MAC] [nvarchar](max) NULL,
+	[SerialNo] [nvarchar](max) NULL,
+	[Tag] [nvarchar](max) NULL,
+	[Remark] [nvarchar](max) NULL,
+	[SubCategoryId] [int] NOT NULL,
+	[Status] [int] NOT NULL,
+ CONSTRAINT [PK_Telephone] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Asset_ExtensionId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Asset_ExtensionId] ON [dbo].[Asset]
+(
+	[ExtensionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Employee_DepartmentId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Employee_DepartmentId] ON [dbo].[Employee]
+(
+	[DepartmentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Extension_EmployeeId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Extension_EmployeeId] ON [dbo].[Extension]
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_OtherAsset_EmployeeId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_OtherAsset_EmployeeId] ON [dbo].[OtherAsset]
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Pager_EmployeeId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Pager_EmployeeId] ON [dbo].[Pager]
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_SubCategory_CategoryId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_SubCategory_CategoryId] ON [dbo].[SubCategory]
+(
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Telephone_SubCategoryId]    Script Date: 1/3/2021 11:30:28 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Telephone_SubCategoryId] ON [dbo].[Telephone]
+(
+	[SubCategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Asset] ADD  DEFAULT ('0001-01-01T00:00:00.0000000') FOR [InstalledDate]
+GO
+ALTER TABLE [dbo].[OtherAsset] ADD  DEFAULT ((0)) FOR [Status]
+GO
+ALTER TABLE [dbo].[Telephone] ADD  DEFAULT ((0)) FOR [Status]
+GO
+ALTER TABLE [dbo].[Asset]  WITH CHECK ADD  CONSTRAINT [FK_Asset_Extension_ExtensionId] FOREIGN KEY([ExtensionId])
+REFERENCES [dbo].[Extension] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Asset] CHECK CONSTRAINT [FK_Asset_Extension_ExtensionId]
+GO
+ALTER TABLE [dbo].[Asset]  WITH CHECK ADD  CONSTRAINT [FK_Asset_Telephone_TelephoneId] FOREIGN KEY([TelephoneId])
+REFERENCES [dbo].[Telephone] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Asset] CHECK CONSTRAINT [FK_Asset_Telephone_TelephoneId]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Department_DepartmentId] FOREIGN KEY([DepartmentId])
+REFERENCES [dbo].[Department] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_Department_DepartmentId]
+GO
+ALTER TABLE [dbo].[Extension]  WITH CHECK ADD  CONSTRAINT [FK_Extension_Employee_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employee] ([Id])
+GO
+ALTER TABLE [dbo].[Extension] CHECK CONSTRAINT [FK_Extension_Employee_EmployeeId]
+GO
+ALTER TABLE [dbo].[OtherAsset]  WITH CHECK ADD  CONSTRAINT [FK_OtherAsset_Employee_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employee] ([Id])
+GO
+ALTER TABLE [dbo].[OtherAsset] CHECK CONSTRAINT [FK_OtherAsset_Employee_EmployeeId]
+GO
+ALTER TABLE [dbo].[Pager]  WITH CHECK ADD  CONSTRAINT [FK_Pager_Employee_EmployeeId] FOREIGN KEY([EmployeeId])
+REFERENCES [dbo].[Employee] ([Id])
+GO
+ALTER TABLE [dbo].[Pager] CHECK CONSTRAINT [FK_Pager_Employee_EmployeeId]
+GO
+ALTER TABLE [dbo].[SubCategory]  WITH CHECK ADD  CONSTRAINT [FK_SubCategory_Category_CategoryId] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Category] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[SubCategory] CHECK CONSTRAINT [FK_SubCategory_Category_CategoryId]
+GO
+ALTER TABLE [dbo].[Telephone]  WITH CHECK ADD  CONSTRAINT [FK_Telephone_SubCategory_SubCategoryId] FOREIGN KEY([SubCategoryId])
+REFERENCES [dbo].[SubCategory] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Telephone] CHECK CONSTRAINT [FK_Telephone_SubCategory_SubCategoryId]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_SubCategoryGetById]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create proc [dbo].[sp_SubCategoryGetById]
+@Id int
+as
+set nocount on;
+select * from SubCategory where Id = @Id
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TelephoneDelete]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create proc [dbo].[sp_TelephoneDelete]
+@Id int
+as
+set nocount on;
+delete from Telephone where Id = @Id
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TelephoneGetAll]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create proc [dbo].[sp_TelephoneGetAll]
+as
+set nocount on;
+select * from Telephone
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TelephoneGetById]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create proc [dbo].[sp_TelephoneGetById]
+@Id int
+as
+set nocount on;
+select * from Telephone where Id = @Id
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TelephoneGetRelatedData]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create proc [dbo].[sp_TelephoneGetRelatedData]
+@Id int
+as
+set nocount on
+begin
+select Telephone.Id,
+	   Telephone.MAC,
+	   Telephone.SerialNo,
+	   Telephone.Tag,
+	   Telephone.IsDefective,
+	   Telephone.Remark,
+	   SubCategory.[Name] as 'Type',
+	   Category.[Name] as 'Brand',
+	   Employee.[Name] as 'User',
+	   Employee.BadgeNo,
+	   Department.[Name] as 'Department',
+	   TelephoneExtension.InstalledDate,
+	   Extension.[Number] as 'Extension',
+	   Extension.Usage as 'ExtType'
 
+from Telephone inner join SubCategory on Telephone.SubCategoryId = SubCategory.Id
+			   inner join Category on SubCategory.CategoryId = Category.Id
+			   inner join TelephoneEmployee on Telephone.Id =  TelephoneEmployee.TelephoneId
+			   inner join Employee on TelephoneEmployee.EmployeeId = Employee.Id
+			   inner join Department on Employee.DepartmentId = Department.Id
+			   inner join TelephoneExtension on Telephone.Id = TelephoneExtension.TelephoneId
+			   inner join Extension on TelephoneExtension.ExtensionId = Extension.Id
+where Telephone.Id = @Id;
+end
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TelephoneInsert]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE proc [dbo].[sp_TelephoneInsert]
+@Id int output,
+@MAC nvarchar(50),
+@SerialNo nvarchar(50),
+@Tag nvarchar(50),
+@IsDefective bit,
+@Remark nvarchar(50),
+@SubCategoryId int
+as
+set nocount on;
+insert into Telephone (MAC, SerialNo, Tag, IsDefective, Remark, SubCategoryId)
+values (@MAC, @SerialNo, @Tag, @IsDefective, @Remark, @SubCategoryId)
+select @Id = @@IDENTITY
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TelephoneUpdate]    Script Date: 1/3/2021 11:30:28 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create proc [dbo].[sp_TelephoneUpdate]
+@Id int,
+@MAC nvarchar(50),
+@SerialNo nvarchar(50),
+@Tag nvarchar (50),
+@IsDefective bit,
+@Remark nvarchar(50)
+as
+set nocount on;
+update Telephone 
+	set MAC = @MAC,
+		SerialNo = @SerialNo,
+		Tag = @Tag,
+		IsDefective = @IsDefective,
+		Remark = @Remark
+	where Id = @Id
+GO
+USE [master]
+GO
+ALTER DATABASE [AssetManagementDB] SET  READ_WRITE 
+GO
