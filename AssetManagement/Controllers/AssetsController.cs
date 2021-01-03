@@ -23,7 +23,6 @@ namespace AssetManagement.Controllers
             _context = context;
         }
 
-        // this is just a test
         private async Task<List<AssetViewModel>> GetAssetsAsync()
         {
             var data = await _context.Asset
@@ -51,7 +50,6 @@ namespace AssetManagement.Controllers
             return data;
         }
         public async Task<IActionResult> Index() => View(await GetAssetsAsync());
-
 
         public async Task<IActionResult> Details(int? telephoneId, int? extensionId)
         {
