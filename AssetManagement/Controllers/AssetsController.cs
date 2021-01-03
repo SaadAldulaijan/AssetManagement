@@ -23,6 +23,7 @@ namespace AssetManagement.Controllers
             _context = context;
         }
 
+        // this is just a test
         private async Task<List<AssetViewModel>> GetAssetsAsync()
         {
             var data = await _context.Asset
