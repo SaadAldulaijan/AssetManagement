@@ -13,7 +13,7 @@ namespace AssetManagement.Models
         public string DN { get; set; }
         public string Model { get; set; }
         public Status Status { get; set; }
-        public int? BadgeNo { get; set; }
+        public int? EmployeeBadgeNo { get; set; }
         public Employee Employee { get; set; }
     }
 }
