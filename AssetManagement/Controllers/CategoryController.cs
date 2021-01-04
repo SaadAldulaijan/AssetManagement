@@ -10,6 +10,7 @@ using AssetManagement.Models;
 
 namespace AssetManagement.Controllers
 {
+    // TODO: this controller need to be limited
     public class CategoryController : Controller
     {
         private readonly DataContext _context;

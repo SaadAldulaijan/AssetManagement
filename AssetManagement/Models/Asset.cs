@@ -7,8 +7,8 @@ namespace AssetManagement.Models
 {
     public class Asset
     {
-        public int TelephoneId { get; set; }
-        public int ExtensionId { get; set; }
+        public string TelephoneSerialNo { get; set; }
+        public int ExtensionNumber { get; set; }
         public DateTime InstalledDate { get; set; } = DateTime.Now;
         public Telephone Telephone { get; set; }
         public Extension Extension { get; set; }

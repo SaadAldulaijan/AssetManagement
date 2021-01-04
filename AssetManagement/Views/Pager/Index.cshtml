@@ -33,9 +33,6 @@
                         @Html.DisplayNameFor(model => model.Capcode)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Employee)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Comment)
                     </th>
                     <th>
@@ -64,43 +61,40 @@
                 {
                     //if (!item.InStock && !item.IsDefective)
                     //{
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Number)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Capcode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Employee.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Comment)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cust)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RateCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MailCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Facility)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Capcode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cust)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RateCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MailCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Facility)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-serialNo="@item.SerialNo">Edit</a> |
+                            <a asp-action="Details" asp-route-serialNo="@item.SerialNo">Details</a> |
+                            <a asp-action="Delete" asp-route-serialNo="@item.SerialNo">Delete</a>
+                        </td>
+                    </tr>
                     //}
 
                 }
@@ -117,9 +111,6 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Capcode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Employee)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Comment)
@@ -150,46 +141,43 @@
                 {
                     //if (item.InStock && !item.IsDefective)
                     //{
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Number)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Capcode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Employee.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Comment)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cust)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RateCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MailCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Facility)
-                            </td>
-                            <td>
-                                @*@Html.DisplayFor(modelItem => item.InStock)*@
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Capcode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cust)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RateCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MailCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Facility)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.InStock)*@
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-serialNo="@item.SerialNo">Edit</a> |
+                            <a asp-action="Details" asp-route-serialNo="@item.SerialNo">Details</a> |
+                            <a asp-action="Delete" asp-route-serialNo="@item.SerialNo">Delete</a>
+                        </td>
+                    </tr>
                     //}
 
                 }
@@ -206,9 +194,6 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Capcode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Employee)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Comment)
@@ -239,46 +224,43 @@
                 {
                     //if (item.IsDefective)
                     //{
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Number)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Capcode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Employee.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Comment)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cust)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.RateCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SerialNo)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.MailCode)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Facility)
-                            </td>
-                            <td>
-                                @*@Html.DisplayFor(modelItem => item.InStock)*@
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Number)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Capcode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Comment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cust)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RateCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MailCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Facility)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.InStock)*@
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-serialNo="@item.SerialNo">Edit</a> |
+                            <a asp-action="Details" asp-route-serialNo="@item.SerialNo">Details</a> |
+                            <a asp-action="Delete" asp-route-serialNo="@item.SerialNo">Delete</a>
+                        </td>
+                    </tr>
                     //}
 
                 }

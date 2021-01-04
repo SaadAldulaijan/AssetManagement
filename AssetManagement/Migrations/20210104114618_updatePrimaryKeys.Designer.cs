@@ -10,43 +10,39 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagement.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201215125435_addenums")]
-    partial class addenums
+    [Migration("20210104114618_updatePrimaryKeys")]
+    partial class updatePrimaryKeys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("AssetManagement.Models.Asset", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Number")
                         .HasColumnType("int");
 
-                    b.Property<int>("ExtensionId")
+                    b.Property<int?>("ExtensionNumber")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("InstalledDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TelephoneId")
-                        .HasColumnType("int");
+                    b.Property<string>("TelephoneSerialNo")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SerialNo", "Number");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("ExtensionNumber");
 
-                    b.HasIndex("ExtensionId");
-
-                    b.HasIndex("TelephoneId");
+                    b.HasIndex("TelephoneSerialNo");
 
                     b.ToTable("Asset");
                 });
@@ -56,7 +52,7 @@ namespace AssetManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -71,7 +67,7 @@ namespace AssetManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -83,13 +79,10 @@ namespace AssetManagement.Migrations
 
             modelBuilder.Entity("AssetManagement.Models.Employee", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BadgeNo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BadgeNo")
-                        .HasColumnType("int");
+                        .UseIdentityColumn();
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
@@ -100,7 +93,7 @@ namespace AssetManagement.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("BadgeNo");
 
                     b.HasIndex("DepartmentId");
 
@@ -109,19 +102,23 @@ namespace AssetManagement.Migrations
 
             modelBuilder.Entity("AssetManagement.Models.Extension", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Number")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
-                    b.Property<int>("Number")
+                    b.Property<int?>("BadgeNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("Usage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("EmployeeBadgeNo")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Usage")
+                        .HasColumnType("int");
+
+                    b.HasKey("Number");
+
+                    b.HasIndex("EmployeeBadgeNo");
 
                     b.ToTable("Extension");
                 });
@@ -131,12 +128,15 @@ namespace AssetManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("BadgeNo")
+                        .HasColumnType("int");
 
                     b.Property<string>("DN")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeBadgeNo")
                         .HasColumnType("int");
 
                     b.Property<string>("Model")
@@ -145,19 +145,23 @@ namespace AssetManagement.Migrations
                     b.Property<string>("SerialNo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeBadgeNo");
 
                     b.ToTable("OtherAsset");
                 });
 
             modelBuilder.Entity("AssetManagement.Models.Pager", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("BadgeNo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Capcode")
                         .HasColumnType("nvarchar(max)");
@@ -168,7 +172,7 @@ namespace AssetManagement.Migrations
                     b.Property<string>("Cust")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmployeeId")
+                    b.Property<int?>("EmployeeBadgeNo")
                         .HasColumnType("int");
 
                     b.Property<string>("Facility")
@@ -183,15 +187,12 @@ namespace AssetManagement.Migrations
                     b.Property<string>("RateCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SerialNo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("SerialNo");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("EmployeeBadgeNo");
 
                     b.ToTable("Pager");
                 });
@@ -201,7 +202,7 @@ namespace AssetManagement.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -218,16 +219,8 @@ namespace AssetManagement.Migrations
 
             modelBuilder.Entity("AssetManagement.Models.Telephone", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("InStock")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDefective")
-                        .HasColumnType("bit");
+                    b.Property<string>("SerialNo")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MAC")
                         .HasColumnType("nvarchar(max)");
@@ -235,8 +228,8 @@ namespace AssetManagement.Migrations
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SerialNo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
@@ -244,7 +237,7 @@ namespace AssetManagement.Migrations
                     b.Property<string>("Tag")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SerialNo");
 
                     b.HasIndex("SubCategoryId");
 
@@ -253,23 +246,17 @@ namespace AssetManagement.Migrations
 
             modelBuilder.Entity("AssetManagement.Models.Asset", b =>
                 {
-                    b.HasOne("AssetManagement.Models.Employee", "Employee")
-                        .WithMany("Assets")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AssetManagement.Models.Extension", "Extension")
                         .WithMany("Assets")
-                        .HasForeignKey("ExtensionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExtensionNumber");
 
                     b.HasOne("AssetManagement.Models.Telephone", "Telephone")
                         .WithMany("Assets")
-                        .HasForeignKey("TelephoneId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TelephoneSerialNo");
+
+                    b.Navigation("Extension");
+
+                    b.Navigation("Telephone");
                 });
 
             modelBuilder.Entity("AssetManagement.Models.Employee", b =>
@@ -279,24 +266,35 @@ namespace AssetManagement.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.Extension", b =>
+                {
+                    b.HasOne("AssetManagement.Models.Employee", "Employee")
+                        .WithMany("Extensions")
+                        .HasForeignKey("EmployeeBadgeNo");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("AssetManagement.Models.OtherAsset", b =>
                 {
                     b.HasOne("AssetManagement.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("OtherAssets")
+                        .HasForeignKey("EmployeeBadgeNo");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("AssetManagement.Models.Pager", b =>
                 {
                     b.HasOne("AssetManagement.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Pagers")
+                        .HasForeignKey("EmployeeBadgeNo");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("AssetManagement.Models.SubCategory", b =>
@@ -306,6 +304,8 @@ namespace AssetManagement.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("AssetManagement.Models.Telephone", b =>
@@ -315,6 +315,42 @@ namespace AssetManagement.Migrations
                         .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.Category", b =>
+                {
+                    b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.Department", b =>
+                {
+                    b.Navigation("Employees");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.Employee", b =>
+                {
+                    b.Navigation("Extensions");
+
+                    b.Navigation("OtherAssets");
+
+                    b.Navigation("Pagers");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.Extension", b =>
+                {
+                    b.Navigation("Assets");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.SubCategory", b =>
+                {
+                    b.Navigation("Telephones");
+                });
+
+            modelBuilder.Entity("AssetManagement.Models.Telephone", b =>
+                {
+                    b.Navigation("Assets");
                 });
 #pragma warning restore 612, 618
         }

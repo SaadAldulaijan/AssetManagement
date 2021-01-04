@@ -25,9 +25,9 @@ namespace AssetManagement.Controllers
             return View(await dataContext.ToListAsync());
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string serialNo)
         {
-            if (id == null)
+            if (serialNo == null)
             {
                 return NotFound();
             }
@@ -35,7 +35,7 @@ namespace AssetManagement.Controllers
             var telephone = await _context.Telephone
                 .Include(t => t.SubCategory)
                 .ThenInclude(c => c.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.SerialNo == serialNo);
             if (telephone == null)
             {
                 return NotFound();
@@ -44,7 +44,6 @@ namespace AssetManagement.Controllers
             return View(telephone);
         }
 
-        // GET: Telephone/Create
         public IActionResult Create()
         {
             ViewData["SubCategoryId"] = new SelectList(_context.SubCategory, "Id", "Name");
@@ -53,26 +52,33 @@ namespace AssetManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MAC,SerialNo,Tag,Status,Remark,SubCategoryId")] Telephone telephone)
+        public async Task<IActionResult> Create([Bind("MAC,SerialNo,Tag,Status,Remark,SubCategoryId")] Telephone telephone)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(telephone);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!TelephoneExists(telephone.SerialNo))
+                {
+                    _context.Add(telephone);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Telephone Already Exists");
+                }
             }
             ViewData["SubCategoryId"] = new SelectList(_context.SubCategory, "Id", "Name", telephone.SubCategoryId);
             return View(telephone);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string serialNo)
         {
-            if (id == null)
+            if (serialNo == null)
             {
                 return NotFound();
             }
 
-            var telephone = await _context.Telephone.FindAsync(id);
+            var telephone = await _context.Telephone.FindAsync(serialNo);
             if (telephone == null)
             {
                 return NotFound();
@@ -83,9 +89,9 @@ namespace AssetManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MAC,SerialNo,Tag,Status,Remark,SubCategoryId")] Telephone telephone)
+        public async Task<IActionResult> Edit(string serialNo, [Bind("MAC,SerialNo,Tag,Status,Remark,SubCategoryId")] Telephone telephone)
         {
-            if (id != telephone.Id)
+            if (serialNo != telephone.SerialNo)
             {
                 return NotFound();
             }
@@ -94,12 +100,13 @@ namespace AssetManagement.Controllers
             {
                 try
                 {
+                    //TODO: if telephone status updated to faulty, telephone should be deleted from asset.
                     _context.Update(telephone);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TelephoneExists(telephone.Id))
+                    if (!TelephoneExists(telephone.SerialNo))
                     {
                         return NotFound();
                     }
@@ -114,16 +121,16 @@ namespace AssetManagement.Controllers
             return View(telephone);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string serialNo)
         {
-            if (id == null)
+            if (serialNo == null)
             {
                 return NotFound();
             }
 
             var telephone = await _context.Telephone
                 .Include(t => t.SubCategory)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.SerialNo == serialNo);
             if (telephone == null)
             {
                 return NotFound();
@@ -134,17 +141,17 @@ namespace AssetManagement.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string serialNo)
         {
-            var telephone = await _context.Telephone.FindAsync(id);
+            var telephone = await _context.Telephone.FindAsync(serialNo);
             _context.Telephone.Remove(telephone);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TelephoneExists(int id)
+        private bool TelephoneExists(string serialNo)
         {
-            return _context.Telephone.Any(e => e.Id == id);
+            return _context.Telephone.Any(e => e.SerialNo == serialNo);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace AssetManagement.ViewModels
 {
     public class AssetViewModel
     {
-        public int TelephoneId { get; set; }
+        public string TelephoneId { get; set; }
         public int ExtensionId { get; set; }
         public string SerialNo { get; set; }
         public string MAC { get; set; }

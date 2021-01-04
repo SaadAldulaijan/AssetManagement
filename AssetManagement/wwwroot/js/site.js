@@ -76,3 +76,23 @@ $(document).ready(function () {
 //        }
 //    });
 //}
+
+
+
+
+//<script>
+//    $(document).ready(function () {
+//        showUser();
+//    });
+//    function showUser() {
+//        var usage = $("#usage").val();
+//        var employeeList = $("#employeeList");
+//        console.log(usage);
+//        if (usage != 0) {
+//        employeeList.prop("disabled", true);
+
+//        } else {
+//        employeeList.prop("disabled", false);
+//        }
+//    }
+//</script>

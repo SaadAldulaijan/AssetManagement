@@ -10,6 +10,7 @@ using AssetManagement.Models;
 
 namespace AssetManagement.Controllers
 {
+    // TODO: Remove the creation , deletion, and limits the update of extension
     public class ExtensionController : Controller
     {
         private readonly DataContext _context;
@@ -25,16 +26,16 @@ namespace AssetManagement.Controllers
             return View(await dataContext.ToListAsync());
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? number)
         {
-            if (id == null)
+            if (number == null)
             {
                 return NotFound();
             }
 
             var extension = await _context.Extension
                 .Include(e => e.Employee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Number == number);
             if (extension == null)
             {
                 return NotFound();
@@ -45,45 +46,52 @@ namespace AssetManagement.Controllers
 
         public IActionResult Create()
         {
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "Name");
+            ViewData["BadgeNo"] = new SelectList(_context.Employee, "BadgeNo", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Number,Usage,EmployeeId,Id")] Extension extension)
+        public async Task<IActionResult> Create([Bind("Number,Usage,BadgeNo")] Extension extension)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(extension);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!ExtensionExists(extension.Number))
+                {
+                    _context.Add(extension);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Extension Already Exists");
+                }
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "Name", extension.EmployeeId);
+            ViewData["BadgeNo"] = new SelectList(_context.Employee, "BadgeNo", "Name", extension.EmployeeBadgeNo);
             return View(extension);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? number)
         {
-            if (id == null)
+            if (number == null)
             {
                 return NotFound();
             }
 
-            var extension = await _context.Extension.FindAsync(id);
+            var extension = await _context.Extension.FindAsync(number);
             if (extension == null)
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "Name", extension.EmployeeId);
+            ViewData["BadgeNo"] = new SelectList(_context.Employee, "BadgeNo", "Name", extension.EmployeeBadgeNo);
             return View(extension);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Number,Usage,EmployeeId,Id")] Extension extension)
+        public async Task<IActionResult> Edit(int number, [Bind("Number,Usage,BadgeNo")] Extension extension)
         {
-            if (id != extension.Id)
+            if (number != extension.Number)
             {
                 return NotFound();
             }
@@ -97,7 +105,7 @@ namespace AssetManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ExtensionExists(extension.Id))
+                    if (!ExtensionExists(extension.Number))
                     {
                         return NotFound();
                     }
@@ -108,20 +116,20 @@ namespace AssetManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "Id", "Name", extension.EmployeeId);
+            ViewData["BadgeNo"] = new SelectList(_context.Employee, "BadgeNo", "Name", extension.EmployeeBadgeNo);
             return View(extension);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? number)
         {
-            if (id == null)
+            if (number == null)
             {
                 return NotFound();
             }
 
             var extension = await _context.Extension
                 .Include(e => e.Employee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Number == number);
             if (extension == null)
             {
                 return NotFound();
@@ -132,17 +140,17 @@ namespace AssetManagement.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int number)
         {
-            var extension = await _context.Extension.FindAsync(id);
+            var extension = await _context.Extension.FindAsync(number);
             _context.Extension.Remove(extension);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ExtensionExists(int id)
+        private bool ExtensionExists(int number)
         {
-            return _context.Extension.Any(e => e.Id == id);
+            return _context.Extension.Any(e => e.Number == number);
         }
     }
 }

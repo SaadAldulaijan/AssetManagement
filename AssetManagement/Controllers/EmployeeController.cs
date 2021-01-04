@@ -27,8 +27,8 @@ namespace AssetManagement.Controllers
             return View(await dataContext.ToListAsync());
         }
 
-        private async Task<EmployeeAssetViewModel> GetEmployeeAsset(int? id) =>
-            await _context.Employee.Where(x=>x.Id == id)
+        private async Task<EmployeeAssetViewModel> GetEmployeeAsset(int? badgeNo) =>
+            await _context.Employee.Where(x=>x.BadgeNo == badgeNo)
                 .Include(x => x.Extensions)
                     .ThenInclude(x=>x.Assets)
                         .ThenInclude(x=>x.Telephone)
@@ -36,7 +36,7 @@ namespace AssetManagement.Controllers
                 .Include(x => x.OtherAssets)
                 .Select(x => new EmployeeAssetViewModel
                 {
-                    Id = x.Id,
+                    Id = x.BadgeNo,
                     Name = x.Name,
                     BadgeNo = x.BadgeNo,
                     Email = x.Email,
@@ -49,14 +49,14 @@ namespace AssetManagement.Controllers
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? badgeNo)
         {
-            if (id == null)
+            if (badgeNo == null)
             {
                 return NotFound();
             }
 
-            var employee = await GetEmployeeAsset(id);
+            var employee = await GetEmployeeAsset(badgeNo);
             if (employee == null)
             {
                 return NotFound();
@@ -73,27 +73,34 @@ namespace AssetManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BadgeNo,Name,Email,DepartmentId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("BadgeNo,Name,Email,DepartmentId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!EmployeeExists(employee.BadgeNo))
+                {
+                    _context.Add(employee);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Employee Already Exists");
+                }
+                
             }
             ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "Name", employee.DepartmentId);
             return View(employee);
         }
 
-        // GET: Employee/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? badgeNo)
         {
-            if (id == null)
+            if (badgeNo == null)
             {
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = await _context.Employee.FindAsync(badgeNo);
             if (employee == null)
             {
                 return NotFound();
@@ -104,9 +111,9 @@ namespace AssetManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BadgeNo,Name,Email,DepartmentId")] Employee employee)
+        public async Task<IActionResult> Edit(int badgeNo, [Bind("BadgeNo,Name,Email,DepartmentId")] Employee employee)
         {
-            if (id != employee.Id)
+            if (badgeNo != employee.BadgeNo)
             {
                 return NotFound();
             }
@@ -120,7 +127,7 @@ namespace AssetManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if (!EmployeeExists(employee.BadgeNo))
                     {
                         return NotFound();
                     }
@@ -135,16 +142,16 @@ namespace AssetManagement.Controllers
             return View(employee);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? badgeNo)
         {
-            if (id == null)
+            if (badgeNo == null)
             {
                 return NotFound();
             }
 
             var employee = await _context.Employee
                 .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.BadgeNo == badgeNo);
             if (employee == null)
             {
                 return NotFound();
@@ -155,17 +162,17 @@ namespace AssetManagement.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int badgeNo)
         {
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = await _context.Employee.FindAsync(badgeNo);
             _context.Employee.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool EmployeeExists(int badgeNo)
         {
-            return _context.Employee.Any(e => e.Id == id);
+            return _context.Employee.Any(e => e.BadgeNo == badgeNo);
         }
     }
 }

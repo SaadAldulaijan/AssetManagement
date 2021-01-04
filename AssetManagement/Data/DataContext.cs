@@ -25,14 +25,14 @@ namespace AssetManagement.Data
         {
             builder.Entity<Category>().ToTable("Category");
             builder.Entity<Department>().ToTable("Department");
-            builder.Entity<Employee>().ToTable("Employee");
-            builder.Entity<Extension>().ToTable("Extension");
+            builder.Entity<Employee>().ToTable("Employee").HasKey(x => x.BadgeNo);
+            builder.Entity<Extension>().ToTable("Extension").HasKey(x => x.Number);
             builder.Entity<OtherAsset>().ToTable("OtherAsset");
-            builder.Entity<Pager>().ToTable("Pager");
+            builder.Entity<Pager>().ToTable("Pager").HasKey(x => x.SerialNo);
             builder.Entity<SubCategory>().ToTable("SubCategory");
-            builder.Entity<Telephone>().ToTable("Telephone");
-            builder.Entity<Asset>().ToTable("Asset").HasKey(k => new { k.TelephoneId, k.ExtensionId });
-            
+            builder.Entity<Telephone>().ToTable("Telephone").HasKey(x => x.SerialNo);
+            builder.Entity<Asset>().ToTable("Asset").HasKey(k => new { k.TelephoneSerialNo, k.ExtensionNumber });
+
         }
     }
 }

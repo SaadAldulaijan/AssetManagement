@@ -10,6 +10,7 @@ using AssetManagement.Models;
 
 namespace AssetManagement.Controllers
 {
+    // TODO: this controller needs to be limited
     public class DepartmentController : Controller
     {
         private readonly DataContext _context;

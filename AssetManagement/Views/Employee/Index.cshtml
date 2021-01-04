@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Department.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-badgeNo="@item.BadgeNo">Edit</a> |
+                <a asp-action="Details" asp-route-badgeNo="@item.BadgeNo">Details</a> |
+                <a asp-action="Delete" asp-route-badgeNo="@item.BadgeNo">Delete</a>
             </td>
         </tr>
 }
