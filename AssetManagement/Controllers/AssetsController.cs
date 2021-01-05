@@ -182,19 +182,24 @@ namespace AssetManagement.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string serialNo, int number)
+        public async Task<IActionResult> DeleteConfirmed(string telephoneSerialNo, int extensionNumber)
         {
+            if (telephoneSerialNo == null || extensionNumber == 0)
+            {
+                return NotFound();
+            }
             // 1. Change extension status to Available
-            var extension = UpdateExtensionOnDelete(number);
+            // TODO: i need to think about it
+            var extension = UpdateExtensionOnDelete(extensionNumber);
             _context.Update(extension);
             await _context.SaveChangesAsync();
             // 2. Add telephone back to stock.
-            var telephone = AddTelephoneToStock(serialNo);
-            _context.Update(serialNo);
+            var telephone = AddTelephoneToStock(telephoneSerialNo);
+            _context.Update(telephone);
             await _context.SaveChangesAsync();
             // 3. Remove asset
             var asset = _context.Asset
-                .Where(x => x.TelephoneSerialNo == serialNo && x.ExtensionNumber == number)
+                .Where(x => x.TelephoneSerialNo == telephoneSerialNo && x.ExtensionNumber == extensionNumber)
                 .FirstOrDefault();
             _context.Asset.Remove(asset);
             await _context.SaveChangesAsync();
@@ -205,6 +210,7 @@ namespace AssetManagement.Controllers
         {
             return _context.Asset.Any(e => e.TelephoneSerialNo == serialNo && e.ExtensionNumber == number);
         }
+
         private Extension UpdateExtensionStatus(Asset asset)
         {
             var extension = _context.Extension.Find(asset.ExtensionNumber);
@@ -225,6 +231,5 @@ namespace AssetManagement.Controllers
             telephone.Status = Status.Stock;
             return telephone;
         }
-
     }
 }
